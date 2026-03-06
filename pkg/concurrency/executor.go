@@ -25,7 +25,7 @@ Methods:
 - Close(): Closes the executor, preventing any new tasks from being submitted. This method should be called when the executor is no longer needed to release any resources it may be holding.
 */
 type Executor interface {
-	Submit(task func()) error
+	Submit(ctx context.Context, task func()) error
 	Wait()
 	Close()
 }
@@ -72,12 +72,10 @@ func NewSimpleExecutor(nRoutines uint, qpm uint) *SimpleExecutor {
 // Submit enqueues a task for concurrent execution.
 // Returns an error if the executor has been closed or if waiting for a
 // concurrency slot or rate-limiter token fails.
-func (e *SimpleExecutor) Submit(task func()) error {
+func (e *SimpleExecutor) Submit(ctx context.Context, task func()) error {
 	if e.closed.Load() {
 		return fmt.Errorf("concurrency: executor is closed")
 	}
-
-	ctx := context.Background()
 
 	if e.sem != nil {
 		if err := e.sem.Acquire(ctx, 1); err != nil {
@@ -134,7 +132,7 @@ func exampleUsage() {
 
 	// ctx is captured by the closure; the task respects cancellation without
 	// needing a context parameter in the func() signature.
-	if err := executor.Submit(func() {
+	if err := executor.Submit(ctx, func() {
 		select {
 		case <-ctx.Done():
 			return
