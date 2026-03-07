@@ -28,6 +28,20 @@
 
 每个发布版本都包含二进制文件、配置示例和 Cloudflare IP 范围文件。
 
+#### 下载域名列表
+
+下载二进制文件后，你还需要下载 v2fly 域名列表：
+
+```sh
+git clone https://github.com/v2fly/domain-list-community.git
+```
+
+然后在 `.env` 文件中配置 `DOMAIN_LIST_PATH`：
+
+```bash
+DOMAIN_LIST_PATH=./domain-list-community/data
+```
+
 ### 从源码构建
 
 #### 克隆仓库

@@ -29,6 +29,20 @@ Available platforms:
 
 Each release includes the binary, configuration example, and Cloudflare IP range file.
 
+#### Download Domain List
+
+After downloading the binary, you also need to download the v2fly domain list:
+
+```sh
+git clone https://github.com/v2fly/domain-list-community.git
+```
+
+Then configure the `DOMAIN_LIST_PATH` in your `.env` file:
+
+```bash
+DOMAIN_LIST_PATH=./domain-list-community/data
+```
+
 ### Build from Source
 
 #### Clone the Repository
