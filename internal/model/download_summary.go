@@ -4,6 +4,6 @@ import "gorm.io/gorm"
 
 type DownloadSummary struct {
 	gorm.Model
-	IP        string  `gorm:"column:ip;index" json:"ip"`
-	Bandwidth float64 `gorm:"column:bandwidth" json:"bandwidth"`
+	IP        string  `gorm:"column:ip;index" json:"ip" csv:"ip"`
+	Bandwidth float64 `gorm:"column:bandwidth" json:"bandwidth" csv:"bandwidth"`
 }

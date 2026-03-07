@@ -14,8 +14,11 @@ var pipelineCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ctx := cmd.Context()
 		doBuildDB(ctx)
+		doExportDNS(ctx)
 		doICMPv4Ping(ctx)
+		doExportICMPv4(ctx)
 		doBandwidthV4Test(ctx)
+		doExportBandwidthV4(ctx)
 
 		systemIPv6Addrs, err := detectSystemIPv6()
 		if err != nil {
@@ -26,7 +29,9 @@ var pipelineCmd = &cobra.Command{
 		}
 
 		doICMPv6Ping(ctx)
+		doExportICMPv6(ctx)
 		doBandwidthV6Test(ctx)
+		doExportBandwidthV6(ctx)
 	},
 }
 

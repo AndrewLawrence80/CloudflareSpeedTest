@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/AndrewLawrence80/CloudflareSpeedTest/internal/download"
@@ -91,6 +92,12 @@ func selectTopV6IPsByRTT(ctx context.Context) ([]string, error) {
 }
 
 func downloadTest(ctx context.Context, ips []string) {
+	if len(ips) == 0 {
+		msg := "no IPs to test bandwidth, may be missing ICMP ping summaries or no Cloudflare IPs found, you can run the 'icmp-ping' command to perform ICMP ping tests and populate the database with summaries"
+		fmt.Println(msg)
+		log.GetLogger().InfoContext(ctx, msg)
+		return
+	}
 	pbar := progressbar.Default(int64(len(ips)), "performing bandwidth tests")
 	testURL := common.EnvOr("TEST_URL", "https://speed.cloudflare.com/__down?bytes=100000000")
 	nRoutines := common.EnvInt("NUM_HTTP_WORKERS", 1)

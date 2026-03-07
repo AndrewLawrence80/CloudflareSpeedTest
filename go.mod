@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	github.com/glebarez/sqlite v1.11.0
+	github.com/gocarina/gocsv v0.0.0-20240520201108-78e41c74b4b1
 	github.com/joho/godotenv v1.5.1
 	github.com/prometheus-community/pro-bing v0.8.0
 	github.com/schollz/progressbar/v3 v3.19.0

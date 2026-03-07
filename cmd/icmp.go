@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/AndrewLawrence80/CloudflareSpeedTest/internal/cloudflare"
@@ -94,6 +95,12 @@ func doICMPv6Ping(ctx context.Context) {
 }
 
 func pingIP(ctx context.Context, ips []string) error {
+	if len(ips) == 0 {
+		msg := "no IPs to ping, may be missing DNS records or no Cloudflare IPs found, you can run the 'build-db' command to populate the database with DNS records"
+		fmt.Println(msg)
+		log.GetLogger().InfoContext(ctx, msg)
+		return nil
+	}
 	pbar := progressbar.Default(int64(len(ips)), "pinging IPs")
 	nRoutines := common.EnvInt("NUM_ICMP_WORKERS", 16)
 	cfg := &icmp.PingConfig{
