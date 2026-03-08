@@ -77,7 +77,7 @@ func doExportICMPv6(ctx context.Context) {
 }
 
 var exportBandwidthV4Cmd = &cobra.Command{
-	Use:   "export-bandwidth",
+	Use:   "export-bandwidthv4",
 	Short: "Export bandwidth test summaries from the database to a CSV file",
 	Long:  "Export bandwidth test summaries from the database to a CSV file. This command will read all bandwidth test summaries from the database and export them to a CSV file named 'bandwidth_summaries.csv' in the current directory.",
 	Run: func(cmd *cobra.Command, args []string) {
