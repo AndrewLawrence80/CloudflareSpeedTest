@@ -4,7 +4,7 @@ import "gorm.io/gorm"
 
 type DNSRecord struct {
 	gorm.Model
-	Domain       string   `gorm:"column:domain;uniqueIndex" json:"domain" csv:"domain"` // use unique index to ensure upsert behavior
+	Domain       string   `gorm:"column:domain;unique" json:"domain" csv:"domain"` // use unique index to ensure upsert behavior
 	IPv4         []string `gorm:"column:ipv4;type:text;serializer:json" json:"ipv4" csv:"ipv4"`
 	IPv6         []string `gorm:"column:ipv6;type:longtext;serializer:json" json:"ipv6" csv:"ipv6"`
 	Success      bool     `gorm:"column:success;index" json:"success" csv:"success"`

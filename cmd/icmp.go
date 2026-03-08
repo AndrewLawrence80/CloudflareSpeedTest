@@ -130,7 +130,7 @@ func pingIP(ctx context.Context, ips []string) error {
 				"max_rtt", stats.MaxRtt, "packet_loss", stats.PacketLoss)
 			store.GetDB().WithContext(ctx).Clauses(clause.OnConflict{
 				Columns:   []clause.Column{{Name: "ip"}},
-				DoUpdates: clause.AssignmentColumns([]string{"min_rtt", "avg_rtt", "max_rtt", "packet_loss", "updated_at"}),
+				DoUpdates: clause.AssignmentColumns([]string{"min_rtt", "avg_rtt", "max_rtt", "packet_loss"}),
 			}).Create(&model.ICMPingSummary{
 				IP:         ip,
 				MinRTT:     stats.MinRtt.Seconds(),
