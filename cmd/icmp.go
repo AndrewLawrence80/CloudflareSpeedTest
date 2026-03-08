@@ -14,6 +14,7 @@ import (
 	"github.com/AndrewLawrence80/CloudflareSpeedTest/pkg/log"
 	progressbar "github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
+	"gorm.io/gorm/clause"
 )
 
 var icmpv4PingCmd = &cobra.Command{
@@ -127,7 +128,10 @@ func pingIP(ctx context.Context, ips []string) error {
 			log.GetLogger().InfoContext(ctx, "ping result", "ip", ip,
 				"min_rtt", stats.MinRtt, "avg_rtt", stats.AvgRtt,
 				"max_rtt", stats.MaxRtt, "packet_loss", stats.PacketLoss)
-			store.GetDB().WithContext(ctx).Create(&model.ICMPingSummary{
+			store.GetDB().WithContext(ctx).Clauses(clause.OnConflict{
+				Columns:   []clause.Column{{Name: "ip"}},
+				DoUpdates: clause.AssignmentColumns([]string{"ip", "min_rtt", "avg_rtt", "max_rtt", "packet_loss", "updated_at"}),
+			}).Create(&model.ICMPingSummary{
 				IP:         ip,
 				MinRTT:     stats.MinRtt.Seconds(),
 				AvgRTT:     stats.AvgRtt.Seconds(),

@@ -13,6 +13,7 @@ import (
 	"github.com/AndrewLawrence80/CloudflareSpeedTest/pkg/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
+	"gorm.io/gorm/clause"
 )
 
 var bandWidthV4Cmd = &cobra.Command{
@@ -123,7 +124,10 @@ func downloadTest(ctx context.Context, ips []string) {
 			}
 			log.GetLogger().InfoContext(ctx, "download result", "ip", ip,
 				"size_mib", summary.Size, "bandwidth_mib_s", summary.Bandwidth, "duration", summary.Duration)
-			store.GetDB().WithContext(ctx).Create(&model.DownloadSummary{
+			store.GetDB().WithContext(ctx).Clauses(clause.OnConflict{
+				Columns:   []clause.Column{{Name: "ip"}},
+				DoUpdates: clause.AssignmentColumns([]string{"bandwidth", "updated_at"}),
+			}).Create(&model.DownloadSummary{
 				IP:        ip,
 				Bandwidth: summary.Bandwidth,
 			})
