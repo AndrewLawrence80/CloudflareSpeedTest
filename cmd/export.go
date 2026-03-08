@@ -93,7 +93,7 @@ func doExportBandwidthV4(ctx context.Context) {
 		log.GetLogger().ErrorContext(ctx, "failed to load bandwidth test summaries for export", "error", err)
 		return
 	}
-	if err := exportToCSV(ctx, &records, "bandwidth_summaries.csv"); err != nil {
+	if err := exportToCSV(ctx, &records, "bandwidthv4_summaries.csv"); err != nil {
 		log.GetLogger().ErrorContext(ctx, "failed to export bandwidth test summaries to CSV", "error", err)
 	}
 }
